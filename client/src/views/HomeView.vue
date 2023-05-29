@@ -13,6 +13,7 @@
     <div class="input">
         <button class="fa fa-play" @click="App.startRecording" > </button>
         <button class="fa fa-trash" @click="App.clearTranscript"></button>
+        <button @click="App.findNearestHospital()"><router-link to='/nearest'>Nearest Hospitals</router-link></button>
    </div>
      <br>
      <br>
@@ -28,12 +29,19 @@
       <br>
     <div v-if="App.transcript">
       <p class="mb-2"><strong>Rekomendasi:</strong></p>
+      <div class="sort-buttons">
+        <button @click="App.sortItems('lowestPrice')">Sort by Lowest Price</button>
+        <button @click="App.sortItems('highestPrice')">Sort by Highest Price</button>
+        <button @click="App.sortItems('Rating')">Sort by Rating</button>
+      </div>
       <ul class="output">
         <li v-for="(item, index) in App.items" :key="index">
           <div class="theitem">
-            {{ item.name }} - {{ item.base_price }} {{ item.selling_unit }}
+            {{ item.name }}
           </div>
           <img :src="item.image_url" />
+          <p>Harga: Rp{{ item.base_price }} {{ item.selling_unit }}</p>
+          <p>★ {{ item.rating }}</p>
           <router-link class="button-name" :to="{path: '/about', query:{slug: item.slug}}">Detail</router-link>
         </li>
       </ul>
@@ -56,7 +64,7 @@ export default {
     }
   },
   mounted() {
-    //this.App.recommendationTranscript();
+    this.App.generateRandomRating();
   }
 }
 </script>
@@ -113,6 +121,16 @@ h1 {
 .search {
   display: flex;
   justify-content: center;
+}
+
+.sort-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.sort-buttons button {
+  width: calc(33.33% - 10px);
+  margin-bottom: 15px;
 }
 
 button {
