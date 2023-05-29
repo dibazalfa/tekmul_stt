@@ -16,10 +16,13 @@ export const useApp = defineStore({
       label: "",
       names: [],
       base_prices: [],
+      external_id: "",
       items: [],
       details: {},
       image_urls: [],
       selling_unit: [],
+      hospitals: [],
+      rating: null
   }),
   actions: {
     //taruh function2nya di sini
@@ -48,9 +51,10 @@ export const useApp = defineStore({
               image_url: obj.image_url,
               selling_unit: obj.selling_unit,
               slug: obj.slug,
+              // rating: this.getStoredRating(obj.slug)
             }));
-
             this.items = results;
+            this.generateRandomRating();
             console.log(this.items);
           });
       };
@@ -68,6 +72,18 @@ export const useApp = defineStore({
       }
     },
 
+    generateRandomRating() {
+      const min = 3.9;
+      const max = 5.0;
+      this.items.forEach((item) => {
+        item.rating = ((Math.random() * (max - min)) + min).toFixed(1);
+      });
+      // this.items.forEach((item) => {
+      //   item.rating = ((Math.random() * (max - min)) + min).toFixed(1);
+      //   this.storeRating(item.slug, item.rating); // Menyimpan rating ke localStorage
+      // });
+    },
+
     recommendationTranscript() {
       this.items = [];
       const q = this.transcript;
@@ -81,10 +97,22 @@ export const useApp = defineStore({
             image_url: obj.image_url,
             selling_unit: obj.selling_unit,
             slug: obj.slug,
-          }))
+            // rating: this.getStoredRating(obj.slug)
+          }));
           this.items = results;
+          this.generateRandomRating();
           console.log(this.items);
         });
+    },
+
+    sortItems(sortBy) {
+      if (sortBy === 'lowestPrice') {
+        this.items.sort((a, b) => a.base_price - b.base_price);
+      } else if (sortBy === 'highestPrice') {
+        this.items.sort((a, b) => b.base_price - a.base_price);
+      } else if (sortBy === 'Rating') {
+        this.items.sort((a, b) => b.rating - a.rating);
+      }
     },
 
     clearTranscript() {
@@ -104,6 +132,12 @@ export const useApp = defineStore({
           console.log(that.details);
         });
     },
-  },
- }
-)
+
+  // storeRating(slug, rating) {
+  //   localStorage.setItem(`rating_${slug}`, rating); // Menyimpan rating ke localStorage dengan key yang unik berdasarkan slug
+  // },
+  // getStoredRating(slug) {
+  //   return localStorage.getItem(`rating_${slug}`) || null; // Mengambil rating dari localStorage berdasarkan slug
+  // }
+}
+})
