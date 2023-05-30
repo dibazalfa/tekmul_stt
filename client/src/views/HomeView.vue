@@ -13,7 +13,7 @@
     <div class="input">
         <button class="fa fa-play" @click="App.startRecording" > </button>
         <button class="fa fa-trash" @click="App.clearTranscript"></button>
-        <button @click="App.findNearestHospital()"><router-link to='/nearest'>Nearest Hospitals</router-link></button>
+        <button @click="App.findNearestHospital()"><router-link to='/jarak'>Nearest Hospitals</router-link></button>
    </div>
      <br>
      <br>
@@ -28,7 +28,7 @@
       <br>
       <br>
     <div v-if="App.transcript">
-      <p class="mb-2"><strong>Rekomendasi:</strong></p>
+      <!-- <p class="mb-2"><strong>Rekomendasi:</strong></p> -->
       <div class="sort-buttons">
         <button @click="App.sortItems('lowestPrice')">Sort by Lowest Price</button>
         <button @click="App.sortItems('highestPrice')">Sort by Highest Price</button>
