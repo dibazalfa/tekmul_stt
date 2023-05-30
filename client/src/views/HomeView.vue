@@ -8,7 +8,7 @@
         ></i>
         <br />
       </div>
-      Speech to Text
+      TalkCare
     </h1>
     <div class="input">
         <button class="fa fa-play" @click="App.startRecording" > </button>
