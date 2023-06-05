@@ -19,11 +19,11 @@ const router = createRouter({
       name: 'jarak',
       component: () => import('../views/jarak.vue')
     },
-    {
-      path: '/seacrh',
-      name: 'seacrh',
-      component: () => import('../views/search.vue')
-    }
+    // {
+    //   path: '/seacrh',
+    //   name: 'seacrh',
+    //   component: () => import('../views/search.vue')
+    // }
   ]
 })
 

@@ -22,7 +22,12 @@ export const useApp = defineStore({
       image_urls: [],
       selling_unit: [],
       hospitals: [],
-      rating: null
+      rating: null,
+      sortLowestPrice: false,
+      sortHighestPrice: false,
+      sortRating: false,
+      originalItems: [],
+      sortedItems: [],
   }),
   actions: {
     //taruh function2nya di sini
@@ -97,6 +102,7 @@ export const useApp = defineStore({
             image_url: obj.image_url,
             selling_unit: obj.selling_unit,
             slug: obj.slug,
+            external_id: obj.external_id,
             // rating: this.getStoredRating(obj.slug)
           }));
           this.items = results;
@@ -105,14 +111,76 @@ export const useApp = defineStore({
         });
     },
 
-    sortItems(sortBy) {
+    // sortItems(sortBy) {
+    //   if (sortBy === 'lowestPrice') {
+    //     this.items.sort((a, b) => a.base_price - b.base_price);
+    //   } else if (sortBy === 'highestPrice') {
+    //     this.items.sort((a, b) => b.base_price - a.base_price);
+    //   } else if (sortBy === 'Rating') {
+    //     this.items.sort((a, b) => b.rating - a.rating);
+    //   }
+    // },
+
+    toggleSort(sortBy) {
       if (sortBy === 'lowestPrice') {
-        this.items.sort((a, b) => a.base_price - b.base_price);
-      } else if (sortBy === 'highestPrice') {
-        this.items.sort((a, b) => b.base_price - a.base_price);
-      } else if (sortBy === 'Rating') {
-        this.items.sort((a, b) => b.rating - a.rating);
+        this.sortLowestPrice = !this.sortLowestPrice;
+        this.updateSort();
+      } else if (sortBy == 'highestPrice') {
+        this.sortHighestPrice = !this.sortHighestPrice;
+        this.updateSort();
+      } else if (sortBy == 'Rating') {
+        this.sortRating = !this.sortRating;
+        this.updateSort();
       }
+    },
+
+    // updateSort(sortBy) {
+    //   if (sortBy === 'lowestPrice') {
+    //     if (this.sortLowestPrice) {
+    //       let sorting;
+    //       sorting = this.items.sort((a, b) => a.base_price - b.base_price);
+    //       if(this.sortRating) {
+    //         sorting.sort((a, b) => b.rating - a.rating);
+    //       }
+    //     } 
+    //     // else {
+    //     //   this.items = [...this.originalItems];
+    //     // }
+    //   } else if (sortBy == 'highestPrice') {
+    //     if (this.sortHighestPrice) {
+    //       this.items.sort((a, b) => b.base_price - a.base_price);
+    //     }
+    //   } else if (sortBy == 'Rating') {
+    //     if (this.sortRating) {
+    //       this.items.sort((a, b) => b.rating - a.rating);
+    //     }
+    //   }
+    // },
+
+    updateSort() {
+      let tempItems = [...this.items]; // Salin items ke array sementara
+      
+      const sortFunctions = []; // Array untuk menyimpan fungsi sorting
+      
+      if (this.sortLowestPrice) {
+        sortFunctions.push((a, b) => a.base_price - b.base_price); // Menambahkan fungsi sorting berdasarkan lowestPrice
+      }
+      if (this.sortHighestPrice) {
+        sortFunctions.push((a, b) => b.base_price - a.base_price); // Menambahkan fungsi sorting berdasarkan highestPrice
+      }
+      if (this.sortRating) {
+        sortFunctions.push((a, b) => b.rating - a.rating); // Menambahkan fungsi sorting berdasarkan Rating
+      }
+      
+      // Melakukan multiple sorting berdasarkan fungsi-fungsi yang ada di sortFunctions
+      for (let sortFunc of sortFunctions) {
+        tempItems.sort(sortFunc);
+      }
+      
+      this.sortedItems = tempItems; // Simpan hasil sorting pertama ke sortedItems
+      
+      // Jika tidak ada kriteria sorting aktif, tetap gunakan hasil sorting pertama
+      this.items = sortFunctions.length === 0 ? [...this.sortedItems] : [...tempItems];
     },
 
     clearTranscript() {
@@ -139,5 +207,8 @@ export const useApp = defineStore({
   // getStoredRating(slug) {
   //   return localStorage.getItem(`rating_${slug}`) || null; // Mengambil rating dari localStorage berdasarkan slug
   // }
+},
+created() {
+  this.originalItems = [...this.items];
 }
 })

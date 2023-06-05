@@ -2,55 +2,73 @@
   <div class="container">
     <h1>
       <div>
-        <i
-          class="fa fa-medkit"
-          :style="{ fontSize: '48px', color: 'black' }"
-        ></i>
+        <i class="fa fa-medkit" :style="{ fontSize: '48px', color: 'black' }"></i>
         <br />
+        TalkCare 
       </div>
-      TalkCare
     </h1>
+
     <div class="input">
-        <button class="fa fa-play" @click="App.startRecording" > </button>
-        <button class="fa fa-trash" @click="App.clearTranscript"></button>
-        <button @click="App.findNearestHospital()"><router-link to='/jarak'>Nearest Hospitals</router-link></button>
-   </div>
-     <br>
-     <br>
-     <div class="input">
-        <input class="form-control" type="text" v-model="App.transcript" />
-      </div>
-        <br>
-        <br>
-        <div class="search">
-        <button class="fa fa-search" @click="App.recommendationTranscript()"></button>
-        </div>
-      <br>
-      <br>
+      <button class="fa fa-play" @click="App.startRecording" > </button>
+      <button class="fa fa-trash" @click="App.clearTranscript"></button>
+      <button @click="App.findNearestHospital()"><router-link to='/jarak'>Nearest Hospitals</router-link></button>
+    </div>
+
+    <br><br>
+
+    <div class="input">
+      <input class="form-control" type="text" v-model="App.transcript" />
+    </div>
+
+    <br><br>
+
+    <div class="search">
+      <button class="fa fa-search" @click="App.recommendationTranscript()"></button>
+    </div>
+
+    <br><br>
+
     <div v-if="App.transcript">
-      <!-- <p class="mb-2"><strong>Rekomendasi:</strong></p> -->
-      <div class="sort-buttons">
+
+      <!-- <div class="sort-buttons">
         <button @click="App.sortItems('lowestPrice')">Sort by Lowest Price</button>
         <button @click="App.sortItems('highestPrice')">Sort by Highest Price</button>
         <button @click="App.sortItems('Rating')">Sort by Rating</button>
+      </div> -->
+
+      <div class="sort-options">
+        <label>
+            <input type="checkbox" @click="App.toggleSort('lowestPrice')" v-model="App.sortLowestPrice">
+            Sort by Lowest Price
+        </label>
+        <label>
+            <input type="checkbox" @click="App.toggleSort('highestPrice')" v-model="App.sortHighestPrice">
+            Sort by Highest Price
+        </label>
+        <label>
+            <input type="checkbox" @click="App.toggleSort('Rating')" v-model="App.sortRating">
+            Sort by Rating
+        </label>
       </div>
+
+
       <ul class="output">
         <li v-for="(item, index) in App.items" :key="index">
-          <div class="theitem">
-            {{ item.name }}
-          </div>
+          <div class="theitem">{{ item.name }}</div>
           <img :src="item.image_url" />
           <p>Harga: Rp{{ item.base_price }} {{ item.selling_unit }}</p>
           <p>★ {{ item.rating }}</p>
           <router-link class="button-name" :to="{path: '/about', query:{slug: item.slug}}">Detail</router-link>
         </li>
       </ul>
+
     </div>
   </div>
 </template>
 
 <script>
 import {useApp} from '../stores/index';
+
 export default {
   data() {
     return {
@@ -59,6 +77,7 @@ export default {
   }, 
   setup() {
     const App = useApp();
+    App.sortType = []; // Initialize sortType as an empty array
     return {
       App,
     }
