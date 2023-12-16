@@ -1,6 +1,7 @@
 ## How to Run 
 
 in /client : `npm run dev`
+
 in /server : `npm run start`
 
 ## About This Website
