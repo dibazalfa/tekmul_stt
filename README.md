@@ -7,7 +7,9 @@ in /server : `npm run start`
 ## About This Website
 TalkCare merupakan website yang memanfaatkan teknologi speech-to-text dan machine learning untuk memberikan rekomendasi obat yang tepat untuk apa yang sedang dirasakan user. 
 
-User akan mengatakan keluhan tentang penyakitnya dan TalkCare akan memberikan rekomendasi obat. Pada website ini, kita juga dapat mencari rumah sakit terdekat dengan posisi kita saat ini.
+User akan mengatakan keluhan tentang penyakitnya dan TalkCare akan memberikan rekomendasi obat. Terdapat fitur sorting sehingga user dapat melakukan sort berdasarkan rating serta harga obat.
+
+Pada website ini, kita juga dapat mencari rumah sakit terdekat dengan posisi kita saat ini.
 
 ## Documentation 
 
